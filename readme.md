@@ -1,6 +1,6 @@
 # ManRisk Bot
 
-A bot application for managing risk-related tasks and automations.
+Aplikasi chatbot untuk manajemen risiko bisnis Penjaminan menggunakan Google Generative AI.
 
 ## About the Application
 
@@ -72,5 +72,5 @@ yarn start
 
 ## Screenshots
 ![Screenshot 1](img/screencapture-localhost-3000-2025-10-05-22_59_59.png)
-![Screenshot 2](img/screencapture-localhost-3000-2025-10-05-23_00_20.png)
-![Screenshot 3](img/screencapture-localhost-3000-2025-10-05-23_00_36.png)
+![Screenshot 2](img/screencapture-localhost-3000-2025-10-05-23_00_41.png)
+![Screenshot 3](img/screencapture-localhost-3000-2025-10-05-23_02_24.png)
