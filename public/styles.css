@@ -1,0 +1,47 @@
+/* Additional custom styles beyond Tailwind */
+.risk-tab {
+    transition: all 0.3s ease;
+}
+
+.risk-tab.active {
+    border-bottom-color: #2563eb;
+    color: #2563eb;
+}
+
+.risk-tab:hover:not(.active) {
+    background-color: #f3f4f6;
+    border-bottom-color: #e5e7eb;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #resultContainer, #resultContainer * {
+        visibility: visible;
+    }
+    #resultContainer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+/* For better mobile responsiveness */
+@media (max-width: 768px) {
+    #riskTabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    #riskTabs li {
+        margin-right: 0;
+    }
+    
+    .risk-tab {
+        width: 100%;
+        padding: 8px 4px;
+        font-size: 12px;
+    }
+}

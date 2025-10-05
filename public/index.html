@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Opinion Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">Risk Management Opinion Chatbot</h1>
+                    <p class="mt-2">Analisis 9 Risiko Bisnis Penjaminan</p>
+                </div>
+                <div class="hidden md:block">
+                    <i class="fas fa-shield-alt text-5xl"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Input Form -->
+            <div class="md:col-span-1 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 text-blue-600">Data Perusahaan Terjamin</h2>
+                
+                <form id="companyForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="companyName">Nama Perusahaan</label>
+                        <input type="text" id="companyName" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="trackRecord">Track Record</label>
+                        <select id="trackRecord" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Pilih Status</option>
+                            <option value="baik">Baik (Tidak Ada Kasus)</option>
+                            <option value="kol2">Pernah KOL 2</option>
+                            <option value="kol3">Pernah KOL 3</option>
+                            <option value="kol4">Pernah KOL 4</option>
+                            <option value="kasus_hukum">Terkait Kasus Hukum</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="location">Lokasi</label>
+                        <select id="location" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Pilih Zona</option>
+                            <option value="hijau">Zona Hijau</option>
+                            <option value="merah">Zona Merah</option>
+                            <option value="hitam">Zona Hitam</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="guaranteeValue">Nilai Jaminan (Rp)</label>
+                        <input type="number" id="guaranteeValue" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="workType">Jenis Pekerjaan</label>
+                        <input type="text" id="workType" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="guaranteeType">Jenis Jaminan</label>
+                        <select id="guaranteeType" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Pilih Jenis Jaminan</option>
+                            <option value="penawaran">Jaminan Penawaran</option>
+                            <option value="pelaksanaan">Jaminan Pelaksanaan</option>
+                            <option value="uang_muka">Jaminan Uang Muka</option>
+                            <option value="pemeliharaan">Jaminan Pemeliharaan</option>
+                            <option value="pembayaran">Jaminan Pembayaran</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="additionalInfo">Informasi Tambahan (Opsional)</label>
+                        <textarea id="additionalInfo" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-2"></i>Analisis Risiko
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="md:col-span-2 bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-blue-600">Opini Manajemen Risiko</h2>
+                    <div class="flex space-x-2">
+                        <button id="copyButton" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-1 px-3 rounded-md transition duration-300" disabled>
+                            <i class="far fa-copy mr-1"></i>Copy
+                        </button>
+                        <button id="printButton" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-1 px-3 rounded-md transition duration-300" disabled>
+                            <i class="fas fa-print mr-1"></i>Print
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loadingIndicator" class="hidden flex-col items-center justify-center py-10">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mb-4"></div>
+                    <p class="text-gray-600">Menganalisis risiko, mohon tunggu...</p>
+                </div>
+                
+                <div id="resultContainer" class="hidden">
+                    <!-- Risk header -->
+                    <div class="bg-blue-50 p-4 rounded-md mb-6">
+                        <h3 class="font-bold text-lg text-blue-800 mb-2">Ringkasan Analisis</h3>
+                        <div id="riskSummary" class="text-gray-700"></div>
+                    </div>
+                    
+                    <!-- Risk tabs -->
+                    <div class="mb-4 border-b">
+                        <ul id="riskTabs" class="flex flex-wrap -mb-px text-sm font-medium text-center">
+                            <li class="mr-2">
+                                <button data-tab="kredit" class="risk-tab inline-block p-4 border-b-2 rounded-t-lg active">Risiko Kredit</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="pasar" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Pasar</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="likuiditas" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Likuiditas</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="operasional" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Operasional</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="kejahatan" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Kejahatan Keuangan</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="hukum" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Hukum</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="kepatuhan" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Kepatuhan</button>
+                            </li>
+                            <li class="mr-2">
+                                <button data-tab="strategik" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Strategik</button>
+                            </li>
+                            <li>
+                                <button data-tab="reputasi" class="risk-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg">Risiko Reputasi</button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Risk content panels -->
+                    <div id="riskContent" class="p-4 bg-gray-50 rounded-md">
+                        <div id="tab-kredit" class="risk-content">
+                            <h3 class="font-bold mb-2">Risiko Kredit</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-pasar" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Pasar</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-likuiditas" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Likuiditas</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-operasional" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Operasional</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-kejahatan" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Kejahatan Keuangan</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-hukum" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Hukum</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-kepatuhan" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Kepatuhan</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-strategik" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Strategik</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                        <div id="tab-reputasi" class="risk-content hidden">
+                            <h3 class="font-bold mb-2">Risiko Reputasi</h3>
+                            <div class="risk-text"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="initialMessage" class="flex flex-col items-center justify-center py-16 text-gray-500">
+                    <i class="fas fa-chart-line text-6xl mb-4"></i>
+                    <p class="text-center">Isi formulir dan klik "Analisis Risiko" untuk mendapatkan opini manajemen risiko</p>
+                </div>
+                
+                <div id="errorMessage" class="hidden bg-red-100 text-red-700 p-4 rounded-md my-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <p>Terjadi kesalahan saat menganalisis risiko. Mohon coba lagi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-600 text-sm">
+            <p>© 2025 Risk Management Opinion Chatbot. Dikembangkan untuk membantu analisis 9 risiko bisnis penjaminan.</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
